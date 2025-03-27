@@ -1,0 +1,15 @@
+header a {
+    @apply text-white font-medium transition-colors duration-300;
+  }
+  
+  header a:hover {
+    @apply text-yellow-500;
+  }
+  
+  header button svg {
+    @apply transition-transform duration-300;
+  }
+  
+  header button:hover svg {
+    @apply scale-110;
+  }

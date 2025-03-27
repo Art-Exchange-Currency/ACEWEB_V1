@@ -1,0 +1,35 @@
+<div class="min-h-screen bg-black text-white flex items-center justify-center">
+    <div class="bg-gray-900 p-8 rounded-lg shadow-lg w-96">
+      <h1 class="text-4xl font-bold mb-8">Welcome to ACE</h1>
+  
+      <!-- Email and Password Form -->
+      <form (ngSubmit)="isSignUp ? signUpWithEmail() : loginWithEmail()" class="mb-6">
+        <label class="block mb-2">Email</label>
+        <input type="email" [(ngModel)]="email" name="email" class="w-full p-2 mb-4 rounded bg-gray-800 text-white" required>
+  
+        <label class="block mb-2">Password</label>
+        <input type="password" [(ngModel)]="password" name="password" class="w-full p-2 mb-4 rounded bg-gray-800 text-white" required>
+  
+        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded w-full">
+          {{ isSignUp ? 'Sign Up' : 'Login with Email' }}
+        </button>
+      </form>
+  
+      <div class="text-center text-gray-400 mb-4">OR</div>
+  
+      <!-- Google Login Button -->
+      <button (click)="loginWithGoogle()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded w-full">
+        Login with Google
+      </button>
+  
+      <p *ngIf="errorMessage" class="text-red-500 mt-4">{{ errorMessage }}</p>
+  
+      <!-- Toggle between Login and Sign Up -->
+      <p class="text-center text-gray-400 mt-4">
+        {{ isSignUp ? "Already have an account?" : "Don't have an account?" }}
+        <span (click)="isSignUp = !isSignUp" class="text-blue-400 hover:text-blue-300 cursor-pointer">
+          {{ isSignUp ? 'Login' : 'Sign Up' }}
+        </span>
+      </p>
+    </div>
+  </div>

@@ -1,0 +1,36 @@
+<header class="bg-gray-900 text-white shadow-md">
+  <div class="container mx-auto flex justify-between items-center py-4 px-6">
+    <a href="/" class="text-3xl font-bold">Art Currency Exchange <span class="text-yellow-500">- ACE</span></a>
+
+    <!-- Navigation Links -->
+    <nav class="hidden md:flex space-x-8">
+      <a routerLink="/auction" class="hover:text-yellow-500" *ngIf="isAuthenticated">Auctions</a>
+      <a routerLink="/events" class="hover:text-yellow-500" *ngIf="isAuthenticated">Events</a>
+      <a routerLink="/dashboard" class="hover:text-yellow-500" *ngIf="isAuthenticated">Dashboard</a>
+      <a routerLink="/learn-more" class="hover:text-yellow-500">Learn More</a>
+      <a routerLink="/faq" class="hover:text-yellow-500">FAQ</a>
+      
+      <!-- Show Login or Logout based on Authentication -->
+      <a routerLink="/login" class="hover:text-yellow-500" *ngIf="!isAuthenticated">Login</a>
+      <button (click)="logout()" class="hover:text-yellow-500" *ngIf="isAuthenticated">Logout</button>
+    </nav>
+
+    <!-- Mobile Menu Button -->
+    <button class="md:hidden" (click)="toggleMenu()">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div *ngIf="isMenuOpen" class="md:hidden bg-gray-800">
+    <a routerLink="/auction" class="block py-2 px-6 hover:bg-gray-700" *ngIf="isAuthenticated">Auctions</a>
+    <a routerLink="/events" class="block py-2 px-6 hover:bg-gray-700" *ngIf="isAuthenticated">Events</a>
+    <a routerLink="/dashboard" class="block py-2 px-6 hover:bg-gray-700" *ngIf="isAuthenticated">Dashboard</a>
+    <a routerLink="/learn-more" class="block py-2 px-6 hover:bg-gray-700">Learn More</a>
+    <a routerLink="/faq" class="block py-2 px-6 hover:bg-gray-700">FAQ</a>
+    <a routerLink="/login" class="block py-2 px-6 hover:bg-gray-700" *ngIf="!isAuthenticated">Login</a>
+    <button (click)="logout()" class="block py-2 px-6 hover:bg-gray-700" *ngIf="isAuthenticated">Logout</button>
+  </div>
+</header>

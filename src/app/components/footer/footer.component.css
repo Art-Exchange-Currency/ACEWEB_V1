@@ -1,0 +1,11 @@
+footer a {
+    @apply transition-colors duration-300;
+  }
+  
+  footer a:hover {
+    @apply text-yellow-500;
+  }
+  
+  footer i {
+    @apply text-white;
+  }

@@ -1,0 +1,32 @@
+<div class="min-h-screen bg-black text-white flex items-center justify-center">
+    <div class="bg-gray-900 p-8 rounded-lg shadow-lg w-96">
+      <h1 class="text-4xl font-bold mb-8">Create an Account</h1>
+  
+      <!-- Email and Password Signup Form -->
+      <form (ngSubmit)="signUpWithEmail()" class="mb-6">
+        <label class="block mb-2">Email</label>
+        <input type="email" [(ngModel)]="email" name="email" class="w-full p-2 mb-4 rounded bg-gray-800 text-white" required>
+  
+        <label class="block mb-2">Password</label>
+        <input type="password" [(ngModel)]="password" name="password" class="w-full p-2 mb-4 rounded bg-gray-800 text-white" required>
+  
+        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded w-full">
+          Sign Up with Email
+        </button>
+      </form>
+  
+      <div class="text-center text-gray-400 mb-4">OR</div>
+  
+      <!-- Google Sign Up Button -->
+      <button (click)="signUpWithGoogle()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded w-full">
+        Sign Up with Google
+      </button>
+  
+      <p *ngIf="errorMessage" class="text-red-500 mt-4">{{ errorMessage }}</p>
+  
+      <div class="mt-6 text-center">
+        <p>Already have an account? <a routerLink="/login" class="text-green-400 hover:underline">Login</a></p>
+      </div>
+    </div>
+  </div>
+  

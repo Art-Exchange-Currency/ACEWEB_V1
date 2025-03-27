@@ -1,0 +1,77 @@
+<div class="events-page bg-black text-white">
+    <!-- Hero Section -->
+    <section class="hero bg-cover bg-center h-[500px] flex items-center justify-center text-center" style="background-image: url('/assets/events-hero.jpg');">
+      <div class="bg-black bg-opacity-70 p-10 rounded-lg">
+        <h1 class="text-4xl md:text-6xl font-bold">Experience the Finest Art Events</h1>
+        <p class="text-lg text-gray-300 mt-4">Join us for exclusive events that celebrate art and culture.</p>
+      </div>
+    </section>
+  
+    <!-- Upcoming Events Section -->
+    <div class="container mx-auto py-10 px-6">
+      <h1 class="text-4xl font-bold mb-8">Upcoming Events</h1>
+  
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div *ngFor="let event of events" class="relative rounded-lg shadow-lg overflow-hidden">
+          <img [src]="event.image" alt="Event Image" class="h-64 w-full object-cover brightness-75">
+          <div class="absolute top-4 right-4">
+            <span *ngIf="event.status === 'Upcoming'" class="bg-yellow-500 text-white px-3 py-1 rounded-full text-sm">Upcoming</span>
+            <span *ngIf="event.status === 'TBD'" class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm">TBD</span>
+          </div>
+          <div class="p-6 bg-gray-800">
+            <h2 class="text-2xl font-semibold mb-4">{{ event.name }}</h2>
+            <p class="text-gray-400 text-sm mb-4">{{ event.shortDescription }}</p>
+            <div class="text-gray-300 mb-4">
+              <p><strong>Date:</strong> {{ event.date || 'To be disclosed' }}</p>
+              <p><strong>Time:</strong> {{ event.time || 'TBA' }}</p>
+              <p><strong>Registrations:</strong> {{ event.registrationCount }}</p>
+            </div>
+            <button *ngIf="event.status === 'Upcoming'" (click)="onRegister(event)" class="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded mt-4">RSVP Now</button>
+            <!-- Top Attendees Section -->
+            <div *ngIf="event.topAttendees?.length" class="mt-6">
+              <h3 class="font-semibold mb-2">Top Attendees</h3>
+              <ul class="text-gray-400">
+                <li *ngFor="let attendee of event.topAttendees">{{ attendee.name }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Event Highlights Section -->
+    <section class="container mx-auto py-16">
+      <h2 class="text-3xl font-semibold mb-8">Event Highlights</h2>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div *ngFor="let highlight of highlights" class="relative">
+          <img [src]="highlight.image" alt="{{ highlight.title }}" class="rounded-lg object-cover h-64 w-full">
+          <div class="absolute bottom-0 bg-black bg-opacity-80 p-4 w-full">
+            <h3>{{ highlight.title }}</h3>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <!-- Past Events Section -->
+    <section class="container mx-auto py-16">
+      <h2 class="text-3xl font-semibold mb-8">Past Events</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div *ngFor="let pastEvent of pastEvents" class="relative rounded-lg overflow-hidden">
+          <img [src]="pastEvent.image" alt="Past Event" class="h-48 w-full object-cover brightness-50">
+          <div class="absolute bottom-0 p-4 w-full bg-black bg-opacity-70">
+            <h3 class="font-semibold">{{ pastEvent.name }}</h3>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <!-- Newsletter Section -->
+    <section class="bg-gray-900 py-16">
+      <div class="container mx-auto text-center">
+        <h2 class="text-3xl font-semibold mb-4">Stay Updated</h2>
+        <p class="text-gray-400 mb-6">Subscribe to receive the latest updates on our exclusive events.</p>
+        <input type="email" placeholder="Enter your email" class="p-3 rounded-lg text-black">
+        <button class="ml-4 bg-yellow-500 text-black py-3 px-6 rounded-lg">Subscribe</button>
+      </div>
+    </section>
+  </div>
