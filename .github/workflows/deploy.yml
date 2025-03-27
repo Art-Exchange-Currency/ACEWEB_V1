@@ -34,9 +34,19 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      # Step 6: Transfer build files to the server
-      - name: Transfer build files to the server
+      # Step 6: Create the directory on the server and transfer build files
+      - name: Create directory and transfer build files to the server
         run: |
+          ssh -o StrictHostKeyChecking=no root@45.77.154.244 << 'EOF'
+            # Create the directory if it doesn't exist
+            sudo mkdir -p /var/www/artcurrencyexchange.com
+
+            # Set proper permissions
+            sudo chown -R root:root /var/www/artcurrencyexchange.com
+            sudo chmod -R 755 /var/www/artcurrencyexchange.com
+          EOF
+
+          # Transfer the build files to the server
           scp -o StrictHostKeyChecking=no -r dist/* root@45.77.154.244:/var/www/artcurrencyexchange.com
 
       # Step 7: Set up Nginx on the server
