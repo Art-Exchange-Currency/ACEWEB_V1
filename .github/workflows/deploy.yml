@@ -43,7 +43,7 @@ jobs:
     # Step 6: SSH into server and deploy
     - name: Deploy to Cloud Server
       run: |
-        ssh -o StrictHostKeyChecking=no root@[2001:19f0:0:70d6:5400:5ff:fe5c:582a] << 'EOF'
+        ssh -o StrictHostKeyChecking=no root@2001:19f0:0:70d6:5400:5ff:fe5c:582a << 'EOF'
           # Pull the latest Docker image
           docker pull taaphise/art-currency-exchange:$GITHUB_SHA
           
