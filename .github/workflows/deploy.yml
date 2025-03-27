@@ -1,55 +1,45 @@
-name: Deploy to Cloud Server
-
-on:
-  push:
-    branches:
-      - main  # Trigger the action on pushes to the main branch
-  pull_request:
-    branches:
-      - main  # Optional: Trigger on PRs to main branch
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Checkout code
-    - name: Checkout Code
-      uses: actions/checkout@v2
+      # Step 1: Checkout code
+      - name: Checkout Code
+        uses: actions/checkout@v2
 
-    # Step 2: Set up Docker Buildx (optional but recommended for multi-platform builds)
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
+      # Step 2: Set up Docker Buildx (optional but recommended for multi-platform builds)
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
 
-    # Step 3: Docker Hub Login (for pushing the image)
-    - name: Log in to Docker Hub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+      # Step 3: Docker Hub Login (for pushing the image)
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-    # Step 4: Build Docker image and push to Docker Hub or a Container Registry (optional)
-    - name: Build and Push Docker Image
-      run: |
-        docker build -t taaphise/art-currency-exchange:$GITHUB_SHA .
-        docker push taaphise/art-currency-exchange:$GITHUB_SHA
+      # Step 4: Build Docker image and push to Docker Hub or a Container Registry (optional)
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t taaphise/art-currency-exchange:$GITHUB_SHA .
+          docker push taaphise/art-currency-exchange:$GITHUB_SHA
 
-    # Step 5: Set up SSH to deploy to cloud server
-    - name: Set up SSH key
-      uses: webfactory/ssh-agent@v0.5.3
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      # Step 5: Set up SSH to deploy to cloud server
+      - name: Set up SSH key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    # Step 6: SSH into server and deploy
-    - name: Deploy to Cloud Server
-      run: |
-        ssh -o StrictHostKeyChecking=no root@45.77.154.244 << 'EOF'
-          # Pull the latest Docker image
-          docker pull taaphise/art-currency-exchange:$GITHUB_SHA
-          
-          # Stop any running containers (optional)
-          docker-compose down
-          
-          # Start the application container
-          docker-compose up -d
-        EOF
+      # Step 6: SSH into server and deploy
+      - name: Deploy to Cloud Server
+        run: |
+          ssh -o StrictHostKeyChecking=no root@45.77.154.244 << 'EOF'
+            # Pull the latest Docker image
+            docker pull taaphise/art-currency-exchange:$GITHUB_SHA
+
+            # Stop any running containers (optional)
+            docker-compose down
+
+            # Start the application container
+            docker-compose up -d
+          EOF
