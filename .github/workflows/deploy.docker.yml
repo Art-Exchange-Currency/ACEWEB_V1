@@ -1,12 +1,12 @@
-name: Deploy to Cloud Server
+# name: Deploy to Cloud Server
 
-on:
-  push:
-    branches:
-      - main  # Trigger the action on pushes to the main branch
-  pull_request:
-    branches:
-      - main  # Optional: Trigger on PRs to main branch
+# on:
+#   push:
+#     branches:
+#       - main  # Trigger the action on pushes to the main branch
+#   pull_request:
+#     branches:
+#       - main  # Optional: Trigger on PRs to main branch
       
 jobs:
   deploy:

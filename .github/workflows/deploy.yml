@@ -37,7 +37,7 @@ jobs:
       # Step 6: Transfer build files to the server
       - name: Transfer build files to the server
         run: |
-          scp -o StrictHostKeyChecking=no -r dist/your-app-name/* root@45.77.154.244:/var/www/artcurrencyexchange.com
+          scp -o StrictHostKeyChecking=no -r dist/ACEWEB_V1/* root@45.77.154.244:/var/www/artcurrencyexchange.com
 
       # Step 7: Set up Nginx on the server
       - name: Set up Nginx on the server
