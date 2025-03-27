@@ -7,22 +7,19 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      # Step 2: Set up Docker Buildx (optional but recommended for multi-platform builds)
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      # Step 3: Docker Hub Login (for pushing the image)
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
+      # Step 2: Set up Node.js (Use version v22.10.0)
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          node-version: '22.10.0'  # Set Node.js version to 22.10.0
 
-      # Step 4: Build Docker image and push to Docker Hub or a Container Registry (optional)
-      - name: Build and Push Docker Image
-        run: |
-          docker build -t taaphise/art-currency-exchange:$GITHUB_SHA .
-          docker push taaphise/art-currency-exchange:$GITHUB_SHA
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Build the Angular app for production
+      - name: Build Angular App
+        run: npm run build --prod  # This generates the production-ready files
 
       # Step 5: Set up SSH to deploy to cloud server
       - name: Set up SSH key
@@ -30,16 +27,47 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      # Step 6: SSH into server and deploy
-      - name: Deploy to Cloud Server
+      # Step 6: Transfer build files to the server
+      - name: Transfer build files to the server
+        run: |
+          scp -o StrictHostKeyChecking=no -r dist/your-app-name/* root@45.77.154.244:/var/www/artcurrencyexchange.com
+
+      # Step 7: Set up Nginx on the server
+      - name: Set up Nginx on the server
         run: |
           ssh -o StrictHostKeyChecking=no root@45.77.154.244 << 'EOF'
-            # Pull the latest Docker image
-            docker pull taaphise/art-currency-exchange:$GITHUB_SHA
+            # Update and install necessary packages
+            sudo apk update
+            sudo apk add nginx
 
-            # Stop any running containers (optional)
-            docker-compose down
+            # Backup the default Nginx configuration file
+            sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
 
-            # Start the application container
-            docker-compose up -d
+            # Create a new configuration for the Angular app
+            echo '
+            server {
+                listen 80;
+                server_name artcurrencyexchange.com;
+
+                root /var/www/artcurrencyexchange.com;
+                index index.html;
+
+                location / {
+                    try_files $uri $uri/ /index.html;
+                }
+
+                error_page 404 /index.html;
+            }
+            ' | sudo tee /etc/nginx/conf.d/default.conf
+
+            # Restart Nginx to apply changes
+            sudo service nginx restart
+          EOF
+
+      # Step 8: Open port 80 for public access (if not already open)
+      - name: Open Port 80 on Server
+        run: |
+          ssh -o StrictHostKeyChecking=no root@45.77.154.244 << 'EOF'
+            sudo ufw allow 80
+            sudo ufw enable
           EOF
