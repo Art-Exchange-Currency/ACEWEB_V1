@@ -1,90 +1,90 @@
-name: Deploy to Cloud Server
+# name: Deploy to Cloud Server
 
-on:
-  push:
-    branches:
-      - main  # Trigger the action on pushes to the main branch
+# on:
+#   push:
+#     branches:
+#       - main  # Trigger the action on pushes to the main branch
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
 
-    steps:
-      # Step 1: Checkout code
-      - name: Checkout Code
-        uses: actions/checkout@v2
+#     steps:
+#       # Step 1: Checkout code
+#       - name: Checkout Code
+#         uses: actions/checkout@v2
 
-      # Step 2: Set up Node.js (Use version v22.10.0)
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '22.10.0'  # Set Node.js version to 22.10.0
+#       # Step 2: Set up Node.js (Use version v22.10.0)
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v2
+#         with:
+#           node-version: '22.10.0'  # Set Node.js version to 22.10.0
 
-      # Step 3: Install dependencies
-      - name: Install dependencies
-        run: npm install
+#       # Step 3: Install dependencies
+#       - name: Install dependencies
+#         run: npm install
 
-      # Step 4: Build the Angular app for production
-      - name: Build Angular App
-        run: npm run build --prod  # This generates the production-ready files
+#       # Step 4: Build the Angular app for production
+#       - name: Build Angular App
+#         run: npm run build --prod  # This generates the production-ready files
 
-      # Step 5: Set up SSH to deploy to cloud server
-      - name: Set up SSH key
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+#       # Step 5: Set up SSH to deploy to cloud server
+#       - name: Set up SSH key
+#         uses: webfactory/ssh-agent@v0.5.3
+#         with:
+#           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      # Step 6: Create the directory on the server and transfer build files
-      - name: Create directory and transfer build files to the server
-        run: |
-          ssh -o StrictHostKeyChecking=no root@45.77.154.244 << 'EOF'
-            # Create the directory if it doesn't exist
-            sudo mkdir -p /var/www/artcurrencyexchange.com
+#       # Step 6: Create the directory on the server and transfer build files
+#       - name: Create directory and transfer build files to the server
+#         run: |
+#           ssh -o StrictHostKeyChecking=no root@45.77.154.244 << 'EOF'
+#             # Create the directory if it doesn't exist
+#             sudo mkdir -p /var/www/artcurrencyexchange.com
 
-            # Set proper permissions
-            sudo chown -R root:root /var/www/artcurrencyexchange.com
-            sudo chmod -R 755 /var/www/artcurrencyexchange.com
-          EOF
+#             # Set proper permissions
+#             sudo chown -R root:root /var/www/artcurrencyexchange.com
+#             sudo chmod -R 755 /var/www/artcurrencyexchange.com
+#           EOF
 
-          # Transfer the build files to the server
-          scp -o StrictHostKeyChecking=no -r dist/* root@45.77.154.244:/var/www/artcurrencyexchange.com
+#           # Transfer the build files to the server
+#           scp -o StrictHostKeyChecking=no -r dist/* root@45.77.154.244:/var/www/artcurrencyexchange.com
 
-      # Step 7: Set up Nginx on the server
-      - name: Set up Nginx on the server
-        run: |
-          ssh -o StrictHostKeyChecking=no root@45.77.154.244 << 'EOF'
-            # Update and install necessary packages
-            sudo apk update
-            sudo apk add nginx
+#       # Step 7: Set up Nginx on the server
+#       - name: Set up Nginx on the server
+#         run: |
+#           ssh -o StrictHostKeyChecking=no root@45.77.154.244 << 'EOF'
+#             # Update and install necessary packages
+#             sudo apk update
+#             sudo apk add nginx
 
-            # Backup the default Nginx configuration file
-            sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
+#             # Backup the default Nginx configuration file
+#             sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
 
-            # Create a new configuration for the Angular app
-            echo '
-            server {
-                listen 80;
-                server_name artcurrencyexchange.com;
+#             # Create a new configuration for the Angular app
+#             echo '
+#             server {
+#                 listen 80;
+#                 server_name artcurrencyexchange.com;
 
-                root /var/www/artcurrencyexchange.com;
-                index index.html;
+#                 root /var/www/artcurrencyexchange.com;
+#                 index index.html;
 
-                location / {
-                    try_files $uri $uri/ /index.html;
-                }
+#                 location / {
+#                     try_files $uri $uri/ /index.html;
+#                 }
 
-                error_page 404 /index.html;
-            }
-            ' | sudo tee /etc/nginx/conf.d/default.conf
+#                 error_page 404 /index.html;
+#             }
+#             ' | sudo tee /etc/nginx/conf.d/default.conf
 
-            # Restart Nginx to apply changes
-            sudo service nginx restart
-          EOF
+#             # Restart Nginx to apply changes
+#             sudo service nginx restart
+#           EOF
 
-      # Step 8: Open port 80 for public access (if not already open)
-      - name: Open Port 80 on Server
-        run: |
-          ssh -o StrictHostKeyChecking=no root@45.77.154.244 << 'EOF'
-            sudo ufw allow 80
-            sudo ufw enable
-          EOF
+#       # Step 8: Open port 80 for public access (if not already open)
+#       - name: Open Port 80 on Server
+#         run: |
+#           ssh -o StrictHostKeyChecking=no root@45.77.154.244 << 'EOF'
+#             sudo ufw allow 80
+#             sudo ufw enable
+#           EOF
