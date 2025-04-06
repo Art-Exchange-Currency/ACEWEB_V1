@@ -2,7 +2,7 @@ version: '3'
 
 services:
   ace-app:
-    build: .
+    image: taaphise/art-currency-exchange:$DOCKER_TAG  # Replace with your image tag
     ports:
       - "80:80"  # Expose port 80 for local testing (optional)
     environment:

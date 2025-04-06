@@ -8,26 +8,24 @@ import { IAceUser } from '../interfaces/IAceUser';
 export class MockAceDataService {
 
     private mockEvents: IAceEvent[] = [
-        {
-          id: '1',
-          name: 'Art Renaissance Auction',
-          shortDescription: 'An exclusive auction featuring Renaissance-inspired masterpieces.',
-          longDescription: 'Join us for a luxurious evening of fine art bidding. Expect Renaissance-inspired artworks by emerging and established artists.',
-          date: '2025-03-25',
-          time: '18:00',
-          image: '/assets/events/art-event-black-tie.jpg', // Updated to black-tie
-          location: 'New York City, NY',
-          registrationCount: 120,
-          maxCapacity: 150,
-          rsvpStatus: 'Open',
-          registrationWindow: '2025-03-01 to 2025-03-20',
-          status: 'Upcoming',
-          topAttendees: [
-            { name: 'Olivia Martinez', picture: 'olivia.jpg' },
-            { name: 'Daniel Smith', picture: 'daniel.png' },
-            { name: 'Sophia Johnson', picture: 'sophia.jpeg' },
-          ],
-        },
+      {
+        "id": "1",
+        "name": "Black Tie Charity Gala",
+        "shortDescription": "An elegant evening featuring a special art auction fundraiser.",
+        "longDescription": "Join us for a special Art Auction Fundraiser featuring an evening of art, music, and remembrance as we honor the life and work of Don Ricardo Harrison Jr., affectionately known as Ricky. Proceeds from the auction will go toward a trust for his children, Alec and Zarah.",
+        "date": "2025-03-27",
+        "time": "18:30",
+        "image": "/assets/events/art-event-black-tie.jpg",
+        "location": "The Switch House, 1325 N Beach St, Philadelphia PA",
+        "registrationCount": 90,
+        "maxCapacity": 200,
+        "rsvpStatus": "Open",
+        "registrationWindow": "2025-03-01 to 2025-03-25",
+        "status": "LIVE",
+        "topAttendees": [
+          { "name": "The Art Currency Exchange", "picture": "olivia.jpg" }
+        ]
+      },
         {
           id: '2',
           name: 'Digital NFT Art Fair',

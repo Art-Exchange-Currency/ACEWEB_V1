@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
   private async checkForToken(): Promise<void> {
     this.token = this.cache.getToken();
     if (this.token) {
-      console.log('Token retrieved from localStorage:', this.token);
+      // console.log('Token retrieved from localStorage:', this.token);
     } else {
       try {
         const user = this.auth.currentUser;
